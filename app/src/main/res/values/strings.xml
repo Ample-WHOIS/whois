@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">RNIDS</string>
+    <string name="title_lookup">Lookup</string>
+    <string name="title_results">Results</string>
+    <string name="title_support">Support</string>
+    <string name="lookup_placeholder">Enter a domain to query…</string>
+    <string name="lookup_button">Query</string>
+    <string name="theme_switch">Dark Theme</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title">RNIDS WHOIS Lookup</string>
+    <string name="button_loading">Please wait…</string>
+
+    <!-- Preference Titles -->
+    <string name="pref_general_header">General</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_lookup"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/navigation_lookup"
+        android:name="com.test.rnids.ui.lookup.LookupFragment"
+        android:label="@string/title_lookup"
+        tools:layout="@layout/fragment_lookup" />
+
+    <fragment
+        android:id="@+id/navigation_results"
+        android:name="com.test.rnids.ui.results.ResultsFragment"
+        android:label="@string/title_results"
+        tools:layout="@layout/fragment_results" />
+
+    <fragment
+        android:id="@+id/navigation_support"
+        android:name="com.test.rnids.ui.support.SupportFragment"
+        android:label="@string/title_support"
+        tools:layout="@layout/fragment_support" />
+</navigation>
