@@ -15,7 +15,7 @@
         tools:visibility="invisible" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/autoCompleteTextView"
+        android:id="@+id/text_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/lookup_placeholder"
@@ -52,7 +52,7 @@
         android:text="@string/lookup_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/text_input" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/logo_l"
@@ -60,7 +60,7 @@
         android:layout_height="125dp"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/autoCompleteTextView"
+        app:layout_constraintBottom_toTopOf="@+id/text_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -79,7 +79,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:visibility="gone"
         tools:layout_editor_absoluteX="177dp"
         tools:layout_editor_absoluteY="661dp" />
 

@@ -23,17 +23,13 @@ class ResultsFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         resultsViewModel =
                 ViewModelProvider(this).get(ResultsViewModel::class.java)
 
         _binding = FragmentResultsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        resultsViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
         return root
     }
 
