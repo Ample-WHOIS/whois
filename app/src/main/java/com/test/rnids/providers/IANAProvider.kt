@@ -1,33 +1,26 @@
 package com.test.rnids.providers
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import com.test.rnids.WHOISClient
-import com.test.rnids.util.await
-import com.test.rnids.util.getOrAwaitValue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
+import com.test.rnids.WHOISClientWrapper
 import java.util.concurrent.locks.ReentrantLock
 
-class IANAProvider : TLDProvider() {
+class IANAProvider : TLDProviderBase() {
     private val lock = ReentrantLock()
     private val condition = lock.newCondition()
 
     companion object {
-        @JvmStatic lateinit var client: WHOISClient
+        @JvmStatic lateinit var clientWrapper: WHOISClientWrapper
     }
 
     init {
-        client = WHOISClient()
+        clientWrapper = WHOISClientWrapper()
     }
 
-    override fun getServer(appContext: Context, domain: String) : MutableLiveData<String>
+    override fun getServer(domain: String) : String
     {
         var response = ""
 
-        client.query(MutableLiveData(domain), null) { resp ->
+        clientWrapper.query(domain) { resp ->
             response = resp
 
             lock.lock()
@@ -45,6 +38,6 @@ class IANAProvider : TLDProvider() {
             lock.unlock()
         }
 
-        return MutableLiveData(response)
+        return response
     }
 }

@@ -51,25 +51,19 @@ class WHOISTask(result: MutableLiveData<String>, lastDomain: MutableLiveData<Str
     }
 }
 
-class WHOISClient {
+class WHOISClientWrapper {
     val lastDomain = MutableLiveData("")
     val result = MutableLiveData("")
 
-    fun query(domain: LiveData<String>, server: LiveData<String>? = null,
+    fun query(domain: String, server: String = "whois.iana.org",
               blockingCallback: ((String) -> Unit)? = null)
     {
-        var serverToUse = server
-        if (serverToUse == null)
-        {
-            serverToUse = MutableLiveData("whois.iana.org")
-        }
-
-        if (domain.value.isNullOrEmpty() || serverToUse.value.isNullOrEmpty())
+        if (domain.isEmpty() || server.isEmpty())
         {
             return
         }
 
         val task = WHOISTask(result, lastDomain, blockingCallback)
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,domain.value, serverToUse.value)
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, domain, server)
     }
 }

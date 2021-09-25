@@ -1,5 +1,6 @@
 package com.test.rnids.util
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -14,77 +15,67 @@ import java.net.Socket
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
+import java.util.concurrent.locks.ReentrantLock
+import android.net.NetworkInfo
 
-fun <T> LiveData<T>.observeOnce(observer: Observer<T>) {
-    observeForever(object : Observer<T> {
-        override fun onChanged(t: T?) {
-            observer.onChanged(t)
-            removeObserver(this)
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
+
+
+fun hasNetworkAccess(context: Context): Boolean {
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val n = cm.activeNetwork
+        if (n != null) {
+            val nc = cm.getNetworkCapabilities(n)
+            return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                    || nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    || nc.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
         }
-    })
-}
-
-fun <T> LiveData<T>.getOrAwaitValue(
-    time: Long = 2,
-    timeUnit: TimeUnit = TimeUnit.SECONDS,
-    afterObserve: () -> Unit = {}
-): T? {
-    var data: T? = null
-    val latch = CountDownLatch(1)
-    val observer = object : Observer<T> {
-        override fun onChanged(o: T?) {
-            data = o
-            latch.countDown()
-            this@getOrAwaitValue.removeObserver(this)
-        }
-    }
-    this.observeForever(observer)
-
-    afterObserve.invoke()
-
-    if (!latch.await(time, timeUnit)) {
-        this.removeObserver(observer)
-        return null
-    }
-
-    return data
-}
-
-@ExperimentalCoroutinesApi
-suspend fun <T> LiveData<T>.await(): T {
-    return withContext(Dispatchers.Main.immediate) {
-        suspendCancellableCoroutine { continuation ->
-            val observer = object : Observer<T> {
-                override fun onChanged(value: T) {
-                    removeObserver(this)
-                    continuation.resume(value, {})
-                }
-            }
-
-            observeForever(observer)
-
-            continuation.invokeOnCancellation {
-                removeObserver(observer)
-            }
-        }
+        return false
+    } else {
+        val netInfo = cm.activeNetworkInfo
+        return netInfo != null && netInfo.isConnectedOrConnecting
     }
 }
 
-fun validateDomain(str: MutableLiveData<String>)
-{
-    if (str.value == null || str.value!!.isEmpty())
+fun isHostAvailable(context: Context, host: String?, port: Int, timeout: Int,
+                    callback: ((Boolean) -> Unit)) {
+    var resp = false
+    if (hasNetworkAccess(context))
     {
-        str.value = ""
+        try {
+            Socket().use { socket ->
+                val inetAddress = InetAddress.getByName(host)
+                val inetSocketAddress =
+                    InetSocketAddress(inetAddress, port)
+                socket.connect(inetSocketAddress, timeout)
+                resp = true
+            }
+        } catch (e: IOException) {
+            resp = false
+        }
+    }
+
+    callback.invoke(resp)
+}
+
+fun validateDomain(str: String) : Boolean
+{
+    if (str.isEmpty())
+    {
+        return false
     }
 
     val validationRegex =
         Regex("((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]?\\.(xn--)?([a-z0-9\\-]{1,61}|[a-z0-9-]{1,30}\\.[a-z]{2,})$")
-    val matches = validationRegex.findAll(str.value!!)
+    val matches = validationRegex.findAll(str)
 
     var count = 0
     for (match in matches)
     {
-        str.value = match.value
         if (++count > 1)
         {
             break
@@ -93,6 +84,7 @@ fun validateDomain(str: MutableLiveData<String>)
 
     if (count != 1)
     {
-        str.value = ""
+        return false
     }
+    return true
 }

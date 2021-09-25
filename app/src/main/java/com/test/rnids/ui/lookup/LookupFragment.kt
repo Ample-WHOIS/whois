@@ -13,8 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.test.rnids.TLDResolver
-import com.test.rnids.WHOISClient
+import com.test.rnids.MainActivity
+import com.test.rnids.providers.TLDProvider
+import com.test.rnids.WHOISClientWrapper
 import com.test.rnids.databinding.FragmentLookupBinding
 import java.io.InputStream
 import java.net.IDN
@@ -22,15 +23,22 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import javax.microedition.khronos.opengles.GL10
+import android.app.Activity
+import androidx.lifecycle.LiveData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlin.coroutines.EmptyCoroutineContext
+
 
 class LookupFragment : Fragment() {
-
     private lateinit var lookupViewModel: LookupViewModel
     private var _binding: FragmentLookupBinding? = null
 
-    val whoisModel = WHOISClient()
+    val whoisModel = WHOISClientWrapper()
 
     private val binding get() = _binding!!
+
+    val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,12 +75,17 @@ class LookupFragment : Fragment() {
 
     private fun queryButtonListener(binding: FragmentLookupBinding)
     {
-        val domain: String = IDN.toASCII(binding.textInput.editText!!.text.toString(),
-            IDN.ALLOW_UNASSIGNED)
-        whoisModel.query(MutableLiveData(domain), TLDResolver.getServer(requireContext(), domain))
-
         binding.queryButton.text = getString(com.test.rnids.R.string.button_loading)
         binding.surfaceView.setPush()
+
+        val domain: String = IDN.toASCII(binding.textInput.editText!!.text.toString(),
+            IDN.ALLOW_UNASSIGNED)
+
+        val mainActivity = context as MainActivity
+
+        scope.launch {
+            whoisModel.query(domain, mainActivity.TLDProviderInst.getServer(domain))
+        }
     }
 }
 

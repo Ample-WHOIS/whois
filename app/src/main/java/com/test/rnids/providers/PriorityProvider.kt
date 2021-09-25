@@ -5,17 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import org.json.JSONException
 import org.json.JSONObject
 
-class PriorityProvider : TLDProvider() {
+class PriorityProvider(appContext: Context) : TLDProviderBase() {
     companion object {
         @JvmStatic var servList: JSONObject? = null
     }
 
-    override fun getServer(appContext: Context, domain: String) : MutableLiveData<String>
+    private val _appContext = appContext
+
+    override fun getServer(domain: String) : String
     {
         if (servList == null)
         {
             try {
-                val stream = appContext.resources.openRawResource(com.test.rnids.R.raw.priority)
+                val stream = _appContext.resources.openRawResource(com.test.rnids.R.raw.priority)
                 val b = ByteArray(stream.available())
                 stream.read(b)
                 servList = JSONObject(String(b))
@@ -23,11 +25,11 @@ class PriorityProvider : TLDProvider() {
         }
 
         var str = domain.substringAfter('.')
-        val result = MutableLiveData("")
+        var result = ""
         while (true)
         {
             try {
-                result.value = servList!![str] as String
+                result = servList!![str] as String
                 break
             } catch (e: JSONException)
             {
