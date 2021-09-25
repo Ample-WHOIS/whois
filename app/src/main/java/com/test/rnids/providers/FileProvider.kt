@@ -1,13 +1,15 @@
 package com.test.rnids.providers
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
+import com.test.rnids.util.validateDomain
 
 class FileProvider : TLDProvider() {
     companion object {
         @JvmStatic var servList: String? = null
     }
 
-    override fun getServer(appContext: Context, domain: String) : String
+    override fun getServer(appContext: Context, domain: String) : MutableLiveData<String>
     {
         if (servList == null)
         {
@@ -23,7 +25,7 @@ class FileProvider : TLDProvider() {
 
         val regex = Regex("^((?:\\.[\\w-]+)*\\.${TLD})\\s+([^#\\t\\n]+).*\$",
             RegexOption.MULTILINE)
-        var matches = regex.findAll(servList!!)
+        val matches = regex.findAll(servList!!)
 
         var bestMatch : MatchResult? = null
         for (match in matches)
@@ -39,31 +41,13 @@ class FileProvider : TLDProvider() {
             }
         }
 
-        var result = bestMatch!!.groupValues[1]
-        if (result.startsWith("NONE") || result.startsWith("WEB"))
+        val result = MutableLiveData(bestMatch!!.groupValues[1])
+        if (result.value!!.startsWith("NONE") || result.value!!.startsWith("WEB"))
         {
-            result = ""
+            result.value = ""
         }
 
-        val validationRegex =
-            Regex("((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]?\\.(xn--)?([a-z0-9\\-]{1,61}|[a-z0-9-]{1,30}\\.[a-z]{2,})")
-        matches = validationRegex.findAll(result)
-
-        var count = 0
-        for (match in matches)
-        {
-            result = match.value
-            if (++count > 1)
-            {
-                break
-            }
-        }
-
-        if (count != 1)
-        {
-            result = ""
-        }
-
+        validateDomain(result)
         return result
     }
 }

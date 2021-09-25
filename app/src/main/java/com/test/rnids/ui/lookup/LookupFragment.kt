@@ -2,27 +2,22 @@ package com.test.rnids.ui.lookup
 
 import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.opengl.GLES20.*
 import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.*
-import com.test.rnids.WHOISModel
-import com.test.rnids.WHOISWorker
+import com.test.rnids.TLDResolver
+import com.test.rnids.WHOISClient
 import com.test.rnids.databinding.FragmentLookupBinding
-import org.apache.commons.net.whois.WhoisClient
 import java.io.InputStream
+import java.net.IDN
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -33,7 +28,7 @@ class LookupFragment : Fragment() {
     private lateinit var lookupViewModel: LookupViewModel
     private var _binding: FragmentLookupBinding? = null
 
-    val whoisModel = WHOISModel()
+    val whoisModel = WHOISClient()
 
     private val binding get() = _binding!!
 
@@ -72,8 +67,9 @@ class LookupFragment : Fragment() {
 
     private fun queryButtonListener(binding: FragmentLookupBinding)
     {
-        whoisModel.query(requireContext(),
-            binding.textInput.editText!!.text.toString())
+        val domain: String = IDN.toASCII(binding.textInput.editText!!.text.toString(),
+            IDN.ALLOW_UNASSIGNED)
+        whoisModel.query(MutableLiveData(domain), TLDResolver.getServer(requireContext(), domain))
 
         binding.queryButton.text = getString(com.test.rnids.R.string.button_loading)
         binding.surfaceView.setPush()
@@ -99,7 +95,7 @@ class BGRenderer(glsl: InputStream) : GLSurfaceView.Renderer {
     private val fragmentGLSL: InputStream = glsl
     private var shader: BGShader? = null
 
-    private var frame: Int = 1000
+    private var frame: Int = 3140
 
     private var push: Boolean = false
 

@@ -1,21 +1,19 @@
 package com.test.rnids
 
 import kotlin.reflect.KClass
+import kotlin.reflect.full.createInstance
 
 object DepResolver {
     @JvmStatic val dependencies: MutableMap<KClass<*>, Any> = mutableMapOf()
 
     fun Resolve(cls: KClass<*>) : Any
     {
-        if (dependencies.containsKey(cls))
-        {
-            return dependencies[cls]!!
-        }
-        else
-        {
-            val thing = cls::class.java.newInstance()
+        return if (dependencies.containsKey(cls)) {
+            dependencies[cls]!!
+        } else {
+            val thing = cls.createInstance()
             dependencies[cls] = thing
-            return thing
+            thing
         }
     }
 

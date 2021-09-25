@@ -9,22 +9,20 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.test.rnids.databinding.ActivityMainBinding
-import com.test.rnids.databinding.FragmentLookupBinding
 import com.test.rnids.ui.settings.SettingsActivity
-import org.apache.commons.net.whois.WhoisClient
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     companion object {
-        @JvmStatic lateinit var whoisModel: WHOISModel
+        @JvmStatic lateinit var whoisClient: WHOISClient
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        whoisModel = WHOISModel()
+        whoisClient = WHOISClient()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
