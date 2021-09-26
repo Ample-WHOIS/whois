@@ -1,6 +1,5 @@
 package com.test.rnids.ui.lookup
 
-import android.Manifest
 import android.content.Context
 import android.opengl.GLES20.*
 import android.opengl.GLSurfaceView
@@ -9,11 +8,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.test.rnids.MainActivity
-import com.test.rnids.WHOISClientWrapper
 import com.test.rnids.databinding.FragmentLookupBinding
 import java.io.InputStream
 import java.net.IDN
@@ -26,12 +23,9 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 import com.test.rnids.parsers.BasicParser
 
-import android.content.SharedPreferences
 import android.os.Handler
-import android.text.InputFilter
 import androidx.core.widget.doOnTextChanged
 import com.test.rnids.util.validateDomain
-
 
 class LookupFragment : Fragment() {
     private lateinit var lookupViewModel: LookupViewModel
@@ -63,12 +57,6 @@ class LookupFragment : Fragment() {
         _binding!!.textInput.editText!!.doOnTextChanged { _, _, _, _ ->
             _binding!!.textInput.error = null
         }
-
-        MainActivity.whoisClientWrapper.result.observe(viewLifecycleOwner, {
-            val parser = BasicParser(requireContext())
-            parser.processRaw(it)
-            binding.testtext.text = parser.toString()
-        })
 
         return binding.root
     }

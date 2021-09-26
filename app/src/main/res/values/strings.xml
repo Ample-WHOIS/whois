@@ -14,6 +14,7 @@
 
     <string name="results_mode_raw">Raw</string>
     <string name="results_mode_pretty">Pretty</string>
+    <string name="results_empty">No results yet!</string>
 
     <!-- Preference Titles -->
     <string name="pref_general_header">General</string>
