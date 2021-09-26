@@ -3,12 +3,20 @@ package com.test.rnids.ui.results
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.test.rnids.MainActivity
+import com.test.rnids.databinding.ExpandableInfoboxBinding
 import com.test.rnids.databinding.FragmentResultsBinding
+import com.test.rnids.parsers.BasicParser
+import com.test.rnids.ui.elements.ExpandableInfobox
+import java.net.IDN
 
 class ResultsFragment : Fragment() {
 
@@ -19,6 +27,11 @@ class ResultsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var parser: BasicParser
+    private val boxes: MutableList<ExpandableInfobox> = mutableListOf()
+
+    private var rawMode = false
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -28,16 +41,111 @@ class ResultsFragment : Fragment() {
             ViewModelProvider(this).get(ResultsViewModel::class.java)
 
         _binding = FragmentResultsBinding.inflate(inflater, container, false)
-        /*binding.expandTextView.text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum " +
-                "has been the industry's standard dummy text ever since the 1500s, " +
-                "when an unknown printer took a galley of type and scrambled it to make a " +
-                "type specimen book. It has survived not only five centuries, but also the " +
-                "leap into electronic typesetting, remaining essentially unchanged. " +
-                "It was popularised in the 1960s with the release of Letraset " +
-                "sheets containing Lorem Ipsum passages, and more recently with desktop " +
-                "publishing software like Aldus PageMaker including versions of Lorem Ipsum."*/
+
+        parser = BasicParser(requireContext())
+
+        MainActivity.whoisClientWrapper.result.observe(viewLifecycleOwner, {
+            parser.processRaw(it)
+            rebuildView()
+            parser.addObserver { _, _ ->
+                rebuildView()
+            }
+        })
+
+        MainActivity.whoisClientWrapper.lastDomain.observe(viewLifecycleOwner, {
+            if (it.isNotEmpty())
+            {
+                _binding!!.sitename.text = IDN.toUnicode(it)
+                _binding!!.favBtn.visibility = VISIBLE
+                _binding!!.alarmBtn.visibility = VISIBLE
+            }
+        })
+
+        _binding!!.rawModeBtn.setOnClickListener { rawButtonListener() }
+        _binding!!.favBtn.setOnClickListener { favButtonListener() }
+        _binding!!.alarmBtn.setOnClickListener { alarmButtonListener() }
 
         return binding.root
+    }
+
+    private fun rawButtonListener()
+    {
+        rawMode = !rawMode
+
+        val id: Int
+        if (rawMode)
+        {
+            id = com.test.rnids.R.drawable.raw_off
+        }
+        else
+        {
+            id = com.test.rnids.R.drawable.raw_on
+        }
+
+        binding.rawModeBtn.setImageResource(id)
+
+        rebuildView()
+    }
+
+    private fun favButtonListener()
+    {
+
+    }
+
+    private fun alarmButtonListener()
+    {
+
+    }
+
+    private fun rebuildView()
+    {
+        _binding!!.rescontainer.scrollTo(0, 0)
+
+        val llayout = _binding!!.prettylayout
+        val rawcontainer = _binding!!.rawcontainer
+
+        if (!rawMode)
+        {
+            rawcontainer.visibility = GONE
+
+            for (section in parser.getSectionsOrdered())
+            {
+                if (section.isEmpty())
+                {
+                    continue
+                }
+
+                val box = ExpandableInfobox(requireContext())
+
+                box.setTitle(section.title)
+                box.setText(section.toString())
+
+                llayout.addView(box)
+                boxes.add(box)
+            }
+
+            if (boxes.size != 0)
+            {
+                _binding!!.emptytext.visibility = GONE
+            }
+        }
+        else
+        {
+            if (boxes.size != 0)
+            {
+                _binding!!.emptytext.visibility = GONE
+            }
+
+            for (box in boxes)
+            {
+                (llayout as ViewGroup).removeView(box)
+            }
+            boxes.clear()
+
+            rawcontainer.visibility = VISIBLE
+        }
+
+        rawcontainer.text = parser.getRaw()
     }
 
     override fun onDestroyView() {

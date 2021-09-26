@@ -6,52 +6,112 @@
     android:layout_height="match_parent"
     tools:context=".ui.lookup.LookupFragment">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/emptytext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:text="@string/results_empty"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/primary_400"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="72dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/sitename"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/results_mode_raw" />
+            android:singleLine="true"
+            android:textColor="@color/primary_400"
+            android:textSize="32sp"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="rnids.rs" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/viewModeSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
+        <ImageButton
+            android:id="@+id/favBtn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="8dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/sitename"
+            app:layout_constraintStart_toEndOf="@+id/sitename"
+            app:layout_constraintTop_toTopOf="@+id/sitename"
+            app:srcCompat="@drawable/favorite_border"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/alarmBtn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="8dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/favBtn"
+            app:layout_constraintTop_toTopOf="@+id/sitename"
+            app:srcCompat="@drawable/schedule"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/rawModeBtn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="20dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/raw_on" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/results_mode_pretty" />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
+        android:id="@+id/rescontainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="128dp"
         android:layout_marginBottom="64dp"
+        android:overScrollMode="never"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:scrollbarSize="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/prettylayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.test.rnids.ui.elements.ExpandableInfobox
+            <TextView
+                android:id="@+id/rawcontainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:typeface="monospace"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
         </LinearLayout>
     </ScrollView>
 
