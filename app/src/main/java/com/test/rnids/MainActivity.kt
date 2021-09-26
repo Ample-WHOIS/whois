@@ -2,6 +2,7 @@ package com.test.rnids
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -9,8 +10,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.test.rnids.databinding.ActivityMainBinding
-import com.test.rnids.databinding.FragmentLookupBinding
 import com.test.rnids.ui.settings.SettingsActivity
+import com.test.rnids.ui.support.PreferenceKlasa
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,4 +45,18 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId){
+            R.id.settings ->{
+                val intent = Intent(this, PreferenceKlasa::class.java)
+                startActivity(intent);
+            }
+        }
+        finish()
+        return true
+    }
+
+
 }

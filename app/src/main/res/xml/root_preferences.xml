@@ -1,13 +1,40 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <PreferenceCategory app:title="@string/pref_general_header">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        android:title="@string/language_switch">
 
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="switch_preference_1"
-            android:title="@string/theme_switch" />
+
+        <ListPreference
+            app:iconSpaceReserved="false"
+            android:title="Choose your language"
+            android:key="choose_language"
+            android:entries="@array/languages_name"
+            android:entryValues="@array/languages_value"
+            android:defaultValue="English"
+            android:textColor="@color/primary_800"/>
+
+
 
     </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        android:title="@string/resolution_switch">
+
+        <ListPreference
+
+            app:iconSpaceReserved="false"
+            android:defaultValue="false"
+            android:entries="@array/resolution_name"
+            android:entryValues="@array/resolution_value"
+            android:key="change_resolution"
+            android:textColor="@color/primary_800"
+            android:title="Change Graphics" />
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

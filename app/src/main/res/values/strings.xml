@@ -5,10 +5,16 @@
     <string name="title_support">Support</string>
     <string name="lookup_placeholder">Enter a domain to query…</string>
     <string name="lookup_button">Query</string>
-    <string name="theme_switch">Dark Theme</string>
+    <string name="theme_switch">Night Mode</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title">RNIDS WHOIS Lookup</string>
     <string name="button_loading">Please wait…</string>
+    <string name="language_switch">Language</string>
+    <string name="resolution_switch">Graphics</string>
+    <string name="orientation_switch">Orientation</string>
+    <string name="brigthness_adjustment">Adjust Brigthness Level</string>
+
+
 
     <!-- Preference Titles -->
     <string name="pref_general_header">General</string>
