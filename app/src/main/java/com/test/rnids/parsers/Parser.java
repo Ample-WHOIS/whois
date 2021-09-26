@@ -1,4 +1,4 @@
-package com.test.rnids.ui;
+package com.test.rnids.parsers;
 
 import java.util.ArrayList;
 import java.util.HashMap;

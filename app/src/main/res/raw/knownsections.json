@@ -1,0 +1,30 @@
+{
+  "misc": {
+    "en": "Miscellaneous Information",
+    "sr": ""
+  },
+  "basic": {
+    "en": "Basic Information",
+    "sr": ""
+  },
+  "owner": {
+    "en": "Registrant Information",
+    "sr": ""
+  },
+  "admin": {
+    "en": "Administrative Contact Information",
+    "sr": ""
+  },
+  "tech": {
+    "en": "Technical Contact Information",
+    "sr": ""
+  },
+  "dns": {
+    "en": "DNS Information",
+    "sr": ""
+  },
+  "meta": {
+    "en": "Meta Information",
+    "sr": ""
+  }
+}

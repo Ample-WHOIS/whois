@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_lookup"
+    app:startDestination="@id/navigation_results"
     tools:ignore="UnusedNavigation">
 
     <fragment
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/navigation_history"
-        android:name="com.test.rnids.ui.support.HistoryFragment"
+        android:name="com.test.rnids.ui.history.HistoryFragment"
         android:label="@string/title_support"
         tools:layout="@layout/fragment_history" />
 </navigation>

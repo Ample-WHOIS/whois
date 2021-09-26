@@ -20,12 +20,17 @@ class TLDProvider(context: Context) : TLDProviderBase() {
 
     override fun getServer(domain: String) : String
     {
-        var provider: TLDProviderBase = DepResolver.Resolve(PriorityProvider::class) as TLDProviderBase
-        var result = provider.getServer(domain)
-
-        if (validateDomain(result))
+        var provider: TLDProviderBase
+        var result: String
+        if (domain.indexOf('.') != -1)
         {
-            return result
+            provider = DepResolver.Resolve(PriorityProvider::class) as TLDProviderBase
+            result = provider.getServer(domain)
+
+            if (validateDomain(result))
+            {
+                return result
+            }
         }
 
         var reachable = false
@@ -49,7 +54,6 @@ class TLDProvider(context: Context) : TLDProviderBase() {
             lock.unlock()
         }
 
-        reachable = false
         if (reachable)
         {
             provider = DepResolver.Resolve(IANAProvider::class) as IANAProvider
@@ -59,6 +63,10 @@ class TLDProvider(context: Context) : TLDProviderBase() {
             {
                 return result
             }
+        }
+        else if (domain.indexOf('.') == -1)
+        {
+            return ""
         }
 
         provider = DepResolver.Resolve(FileProvider::class) as FileProvider

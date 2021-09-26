@@ -2,6 +2,7 @@ package com.test.rnids
 
 import android.content.Context
 import com.test.rnids.providers.FileProvider
+import com.test.rnids.providers.IANAProvider
 import com.test.rnids.providers.PriorityProvider
 import java.lang.reflect.Constructor
 import kotlin.reflect.KClass
@@ -11,6 +12,7 @@ object DepResolver {
     @JvmStatic val dependencies: MutableMap<KClass<*>, Any> = mutableMapOf()
     @JvmStatic val dependencyCtorArgs: Map<KClass<*>, KClass<*>> = mapOf( // TODO
         Pair(PriorityProvider::class, Context::class),
+        Pair(IANAProvider::class, Context::class),
         Pair(FileProvider::class, Context::class)
     )
 

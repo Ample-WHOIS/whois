@@ -1,4 +1,4 @@
-package com.test.rnids.ui.support;
+package com.test.rnids.ui.history;
 
 import android.os.Bundle;
 
@@ -18,16 +18,9 @@ import com.test.rnids.databinding.FragmentHistoryBinding;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HistoryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HistoryFragment extends Fragment {
     private ArrayList<DomainItem> domainItems= new ArrayList<>();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 

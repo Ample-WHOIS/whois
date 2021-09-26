@@ -2,7 +2,9 @@ package com.test.rnids
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -11,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.test.rnids.databinding.ActivityMainBinding
 import com.test.rnids.providers.TLDProvider
 import com.test.rnids.ui.settings.SettingsActivity
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -27,14 +30,16 @@ class MainActivity : AppCompatActivity() {
         TLDProviderInst = TLDProvider(applicationContext)
         DepResolver.setCommonArg(applicationContext)
 
-        whoisClientWrapper = WHOISClientWrapper()
+        whoisClientWrapper = WHOISClientWrapper(applicationContext)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
+            as NavHostFragment
         val navController = navHostFragment.navController
 
         // Passing each menu ID as a set of Ids because each
@@ -47,6 +52,12 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.hide()
 
         binding.settingsBtn.setOnClickListener { settingsButtonListener() }
+    }
+
+    fun switchToResults()
+    {
+        val results: View = findViewById(R.id.navigation_results)
+        results.performClick()
     }
 
     private fun settingsButtonListener()
