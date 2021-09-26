@@ -1,0 +1,111 @@
+{
+  "whois": {
+    "section": "meta",
+    "en": "",
+    "sr": ""
+  },
+  "refer": {
+    "section": "meta",
+    "en": "",
+    "sr": ""
+  },
+  "source": {
+    "section": "meta",
+    "en": "",
+    "sr": ""
+  },
+  "domainname": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "domainstatus": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "registrationdate": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "modificationdate": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "expirationdate": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "confirmed": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "registrar": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "registrant": {
+    "section": "owner",
+    "en": "",
+    "sr": ""
+  },
+  "address": {
+    "section": "owner",
+    "en": "",
+    "sr": "",
+    "variable": true
+  },
+  "postalcode": {
+    "section": "owner",
+    "en": "",
+    "sr": "",
+    "variable": true
+  },
+  "idnumber": {
+    "section": "owner",
+    "en": "",
+    "sr": "",
+    "variable": true
+  },
+  "taxid": {
+    "section": "owner",
+    "en": "",
+    "sr": "",
+    "variable": true
+  },
+  "administrativecontact": {
+    "section": "admin",
+    "en": "",
+    "sr": ""
+  },
+  "technicalcontact": {
+    "section": "tech",
+    "en": "",
+    "sr": ""
+  },
+  "dns": {
+    "section": "dns",
+    "en": "",
+    "sr": ""
+  },
+  "dnssec": {
+    "section": "dns",
+    "en": "",
+    "sr": ""
+  },
+  "dnssecsigned": {
+    "section": "dns",
+    "en": "",
+    "sr": ""
+  },
+  "whoistimestamp": {
+    "section": "meta",
+    "en": "",
+    "sr": ""
+  }
+}

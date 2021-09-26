@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/navigation_history"
-        android:icon="@android:drawable/ic_menu_recent_history"
+        android:icon="@drawable/history"
         android:title="History" />
 
 </menu>

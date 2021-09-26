@@ -11,10 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.test.rnids.MainActivity
-import com.test.rnids.providers.TLDProvider
 import com.test.rnids.WHOISClientWrapper
 import com.test.rnids.databinding.FragmentLookupBinding
 import java.io.InputStream
@@ -23,18 +21,21 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import javax.microedition.khronos.opengles.GL10
-import android.app.Activity
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
+import com.test.rnids.parsers.BasicParser
+
+import android.content.SharedPreferences
+import android.os.Handler
+import android.text.InputFilter
+import androidx.core.widget.doOnTextChanged
+import com.test.rnids.util.validateDomain
 
 
 class LookupFragment : Fragment() {
     private lateinit var lookupViewModel: LookupViewModel
     private var _binding: FragmentLookupBinding? = null
-
-    val whoisModel = WHOISClientWrapper()
 
     private val binding get() = _binding!!
 
@@ -50,19 +51,23 @@ class LookupFragment : Fragment() {
 
         _binding = FragmentLookupBinding.inflate(inflater, container, false)
 
-        val requestPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                //if (isGranted) { } else { }
-            }
-
-        requestPermissionLauncher.launch(Manifest.permission.INTERNET)
-
         _binding!!.queryButton.setOnClickListener { queryButtonListener(_binding!!) }
 
-        whoisModel.result.observe(viewLifecycleOwner, {
-            binding.testtext.text = it
+        _binding!!.textInput.editText!!.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus)
+            {
+                _binding!!.textInput.error = null
+            }
+        }
+
+        _binding!!.textInput.editText!!.doOnTextChanged { _, _, _, _ ->
+            _binding!!.textInput.error = null
+        }
+
+        MainActivity.whoisClientWrapper.result.observe(viewLifecycleOwner, {
+            val parser = BasicParser(requireContext())
+            parser.processRaw(it)
+            binding.testtext.text = parser.toString()
         })
 
         return binding.root
@@ -75,17 +80,49 @@ class LookupFragment : Fragment() {
 
     private fun queryButtonListener(binding: FragmentLookupBinding)
     {
-        binding.queryButton.text = getString(com.test.rnids.R.string.button_loading)
-        binding.surfaceView.setPush()
+        binding.textInput.error = null
 
-        val domain: String = IDN.toASCII(binding.textInput.editText!!.text.toString(),
-            IDN.ALLOW_UNASSIGNED)
+        binding.surfaceView.setPush()
+        var domain = binding.textInput.editText!!.text.toString()
+
+        if (domain.isEmpty())
+        {
+            binding.textInput.error = getString(com.test.rnids.R.string.empty_error)
+            return
+        }
+
+        var tld = false
+        if (domain.startsWith('.'))
+        {
+            tld = true
+            domain = domain.removePrefix(".")
+        }
+        domain = IDN.toASCII(domain, IDN.ALLOW_UNASSIGNED)
+
+        if (!tld && !validateDomain(domain))
+        {
+            binding.textInput.error = getString(com.test.rnids.R.string.invalid_error)
+            return
+        }
+
+        binding.queryButton.text = getString(com.test.rnids.R.string.button_loading)
 
         val mainActivity = context as MainActivity
-
         scope.launch {
-            whoisModel.query(domain, mainActivity.TLDProviderInst.getServer(domain))
+            MainActivity.whoisClientWrapper
+                .queryChain(domain, mainActivity.TLDProviderInst.getServer(domain))
+        }.invokeOnCompletion {
+            Handler(mainActivity.mainLooper).post {
+                mainActivity.switchToResults()
+            }
         }
+
+        /*val settings: SharedPreferences = (context as MainActivity)
+            .getSharedPreferences(PREFS_NAME, 0)
+        val editor = settings.edit()
+        editor.putInt("homeScore", YOUR_HOME_SCORE)
+
+        editor.apply()*/
     }
 }
 

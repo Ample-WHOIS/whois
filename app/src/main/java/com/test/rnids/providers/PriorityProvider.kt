@@ -21,7 +21,9 @@ class PriorityProvider(appContext: Context) : TLDProviderBase() {
                 val b = ByteArray(stream.available())
                 stream.read(b)
                 servList = JSONObject(String(b))
-            } catch (e: Exception) { }
+            } catch (e: Exception) {
+                return ""
+            }
         }
 
         var str = domain.substringAfter('.')
