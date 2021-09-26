@@ -7,6 +7,7 @@
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/drawable/globe.xml" value="0.3828125" />
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/drawable/rnids.xml" value="0.22135416666666666" />
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/activity_main.xml" value="0.22301912568306012" />
+        <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/border.xml" value="0.23157894736842105" />
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/expandable_infobox.xml" value="0.23157894736842105" />
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/fav_item.xml" value="0.23157894736842105" />
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/fragment_history.xml" value="0.23157894736842105" />
@@ -16,7 +17,7 @@
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/fragment_settings.xml" value="0.23157894736842105" />
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/fragment_support.xml" value="0.23157894736842105" />
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/item.xml" value="0.23157894736842105" />
-        <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/settings_activity.xml" value="0.23157894736842105" />
+        <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/layout/settings_activity.xml" value="0.19519519519519518" />
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Misc/Android/RNIDS/app/src/main/res/xml/root_preferences.xml" value="0.23157894736842105" />
       </map>

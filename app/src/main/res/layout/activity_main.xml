@@ -30,24 +30,12 @@
         app:layout_constraintVertical_bias="0.0"
         app:navGraph="@navigation/mobile_navigation" />
 
-    <ImageButton
-        android:id="@+id/settingsBtn"
-        android:layout_width="?attr/minTouchTargetSize"
-        android:layout_height="?attr/minTouchTargetSize"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/settings_white"
-        android:src="@drawable/settings_white"
-        android:background="?attr/selectableItemBackgroundBorderless" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="monospace"
         android:text="@string/title"
         android:textAlignment="viewStart"
@@ -55,8 +43,19 @@
         android:textColor="@color/primary_800"
         android:textSize="24sp"
         android:typeface="monospace"
-        app:layout_constraintBottom_toBottomOf="@+id/settingsBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/settingsBtn"
+        android:layout_width="?attr/minTouchTargetSize"
+        android:layout_height="?attr/minTouchTargetSize"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/settings_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/settings_white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

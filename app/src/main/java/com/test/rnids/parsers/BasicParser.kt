@@ -1,9 +1,12 @@
 package com.test.rnids.parsers
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import org.json.JSONObject
+import java.lang.Integer.max
+import java.util.*
 
-class BasicSection(_title: String = "Miscellaneous Information") {
+class BasicSection(_title: String = "Miscellaneous Information") : Observable() {
     var title: String = _title
     private val map : MutableMap<String, String> = mutableMapOf()
 
@@ -15,8 +18,13 @@ class BasicSection(_title: String = "Miscellaneous Information") {
         }
         else
         {
-            map[key] = map[key] + "\n" + value
+            if (map[key]!![map[key]!!.length - 1] != '\n')
+            {
+                map[key] = map[key] + "\n"
+            }
+            map[key] = map[key] + value.padStart(key.length + 2 + value.length) + "\n"
         }
+        notifyObservers()
     }
 
     fun getKey(key: String) : String
@@ -26,6 +34,11 @@ class BasicSection(_title: String = "Miscellaneous Information") {
             return map[key]!!
         }
         return ""
+    }
+
+    fun isEmpty() : Boolean
+    {
+        return map.keys.isEmpty()
     }
 
     override fun toString(): String {
@@ -39,7 +52,7 @@ class BasicSection(_title: String = "Miscellaneous Information") {
     }
 }
 
-class BasicParser(appContext: Context) {
+class BasicParser(appContext: Context) : Observable() {
     companion object {
         @JvmStatic var knownEntries: JSONObject? = null
         @JvmStatic var knownSections: JSONObject? = null
@@ -50,6 +63,12 @@ class BasicParser(appContext: Context) {
     )
 
     private val _appContext = appContext
+    private var _raw = ""
+
+    fun getRaw() : String
+    {
+        return _raw
+    }
 
     fun processRaw(raw: String)
     {
@@ -81,6 +100,8 @@ class BasicParser(appContext: Context) {
         {
             return
         }
+
+        _raw = raw
 
         var currSection: String = ""
 
@@ -141,6 +162,12 @@ class BasicParser(appContext: Context) {
                 getSection(currSection)!!.addKey(line.substringBefore(':'), value)
             }
         }
+
+        notifyObservers()
+        for (key in map.keys)
+        {
+            map[key]!!.addObserver { _, _ -> notifyObservers() }
+        }
     }
 
     private fun checkSpecial(str: String) : Pair<String, String>?
@@ -164,6 +191,50 @@ class BasicParser(appContext: Context) {
         }
 
         return null
+    }
+
+    fun getSectionsOrdered() : MutableList<BasicSection>
+    {
+        var basic: BasicSection? = null
+        var dns: BasicSection? = null
+        var meta: BasicSection? = null
+        var misc: BasicSection? = null
+
+        val res: MutableList<BasicSection> = mutableListOf()
+        for (key in map.keys)
+        {
+            val value = map[key]!!
+            when (key)
+            {
+                "basic" -> { basic = value }
+                "dns" -> { dns = value }
+                "meta" -> { meta = value }
+                "misc" -> { misc = value }
+                else -> { res.add(value) }
+            }
+        }
+
+        if (basic != null)
+        {
+            res.add(0, basic)
+        }
+
+        if (dns != null)
+        {
+            res.add(res.size, dns)
+        }
+
+        if (meta != null)
+        {
+            res.add(res.size, meta)
+        }
+
+        if (misc != null)
+        {
+            res.add(res.size, misc)
+        }
+
+        return res
     }
 
     fun getSection(key: String) : BasicSection?
