@@ -19,8 +19,8 @@
         tools:layout="@layout/fragment_results" />
 
     <fragment
-        android:id="@+id/navigation_support"
-        android:name="com.test.rnids.ui.support.SupportFragment"
+        android:id="@+id/navigation_history"
+        android:name="com.test.rnids.ui.support.HistoryFragment"
         android:label="@string/title_support"
-        tools:layout="@layout/fragment_support" />
+        tools:layout="@layout/fragment_history" />
 </navigation>

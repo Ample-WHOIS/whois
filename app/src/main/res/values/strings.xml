@@ -2,7 +2,7 @@
     <string name="app_name">RNIDS</string>
     <string name="title_lookup">Lookup</string>
     <string name="title_results">Results</string>
-    <string name="title_support">Support</string>
+    <string name="title_support">History</string>
     <string name="lookup_placeholder">Enter a domain to query…</string>
     <string name="lookup_button">Query</string>
     <string name="theme_switch">Dark Theme</string>
@@ -12,4 +12,6 @@
 
     <!-- Preference Titles -->
     <string name="pref_general_header">General</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
