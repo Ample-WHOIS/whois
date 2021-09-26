@@ -1,5 +1,8 @@
 package com.test.rnids.ui.history;
 
+import android.annotation.SuppressLint;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,63 +16,59 @@ import android.view.ViewGroup;
 
 import com.test.rnids.DomainAdapter;
 import com.test.rnids.DomainItem;
+import com.test.rnids.FavAdapter;
+import com.test.rnids.FavDB;
+import com.test.rnids.FavItem;
 import com.test.rnids.R;
 import com.test.rnids.databinding.FragmentHistoryBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryFragment extends Fragment {
-    private ArrayList<DomainItem> domainItems= new ArrayList<>();
+    private RecyclerView recyclerView;
+    private FavDB favDB;
+    private List<FavItem> favItemList= new ArrayList<>();
+    private FavAdapter favAdapter;
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HistoryFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HistoryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HistoryFragment newInstance(String param1, String param2) {
-        HistoryFragment fragment = new HistoryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        @NonNull FragmentHistoryBinding _binding = FragmentHistoryBinding.inflate(inflater, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container,Bundle savedInstanceState){
         View root = inflater.inflate(R.layout.fragment_history,container,false);
-        RecyclerView recyclerView = _binding.recyclerView;
+
+        favDB = new FavDB(getActivity());
+        recyclerView=root.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new DomainAdapter(domainItems,getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        domainItems.add(new DomainItem(R.drawable.lookup,"domejn1","1","0"));
-        domainItems.add(new DomainItem(R.drawable.lookup,"domejn2","2","0"));
+
+        loadData();
         return root;
     }
+    private void loadData() {
+        if (favItemList != null) {
+            favItemList.clear();
+        }
+        SQLiteDatabase db = favDB.getReadableDatabase();
+        Cursor cursor = favDB.select_all_favorite_list();
+        try {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(FavDB.ITEM_TITLE));
+                @SuppressLint("Range") String id = cursor.getString(cursor.getColumnIndex(FavDB.KEY_ID));
+                FavItem favItem = new FavItem(title, id);
+                favItemList.add(favItem);
+            }
+        } finally {
+            if (cursor != null && cursor.isClosed())
+                cursor.close();
+            db.close();
+        }
+
+        favAdapter = new FavAdapter(getActivity(), favItemList);
+
+        recyclerView.setAdapter(favAdapter);
+
+    }
+
+
+
+
 }
