@@ -2,6 +2,7 @@ package com.test.rnids
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
@@ -13,6 +14,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.test.rnids.databinding.ActivityMainBinding
 import com.test.rnids.providers.TLDProvider
 import com.test.rnids.ui.settings.SettingsActivity
+import android.content.res.ColorStateList
+import android.content.res.Configuration
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.core.content.ContextCompat
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,6 +53,27 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_lookup, R.id.navigation_results, R.id.navigation_history))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        if (resources.configuration.uiMode and
+            Configuration.UI_MODE_NIGHT_MASK != UI_MODE_NIGHT_YES)
+        {
+            val states = arrayOf(
+                intArrayOf(android.R.attr.state_enabled),
+                intArrayOf(-android.R.attr.state_enabled),
+                intArrayOf(android.R.attr.state_pressed),
+                intArrayOf(-android.R.attr.state_checked)
+            )
+
+            val colors = intArrayOf(
+                ContextCompat.getColor(applicationContext, R.color.white),
+                ContextCompat.getColor(applicationContext, R.color.primary_400),
+                ContextCompat.getColor(applicationContext, R.color.primary_400),
+                ContextCompat.getColor(applicationContext, R.color.white)
+            )
+
+            binding.navView.itemIconTintList = ColorStateList(states, colors)
+            binding.navView.itemTextColor = binding.navView.itemIconTintList
+        }
 
         supportActionBar!!.hide()
 

@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RNIDS" >
         <activity
-            android:name=".Support"
+            android:name=".ui.support.SupportActivity"
             android:exported="true" />
         <activity
             android:name=".ui.settings.SettingsActivity"

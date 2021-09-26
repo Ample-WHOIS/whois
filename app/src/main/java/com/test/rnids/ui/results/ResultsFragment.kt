@@ -30,6 +30,7 @@ class ResultsFragment : Fragment() {
     private lateinit var parser: BasicParser
     private val boxes: MutableList<ExpandableInfobox> = mutableListOf()
 
+    private var doneWork = false
     private var rawMode = false
 
     override fun onCreateView(
@@ -50,6 +51,7 @@ class ResultsFragment : Fragment() {
             parser.addObserver { _, _ ->
                 rebuildView()
             }
+            _binding!!.emptytext.visibility = GONE
         })
 
         MainActivity.whoisClientWrapper.lastDomain.observe(viewLifecycleOwner, {
@@ -58,6 +60,7 @@ class ResultsFragment : Fragment() {
                 _binding!!.sitename.text = IDN.toUnicode(it)
                 _binding!!.favBtn.visibility = VISIBLE
                 _binding!!.alarmBtn.visibility = VISIBLE
+                _binding!!.emptytext.visibility = GONE
             }
         })
 
@@ -123,19 +126,9 @@ class ResultsFragment : Fragment() {
                 llayout.addView(box)
                 boxes.add(box)
             }
-
-            if (boxes.size != 0)
-            {
-                _binding!!.emptytext.visibility = GONE
-            }
         }
         else
         {
-            if (boxes.size != 0)
-            {
-                _binding!!.emptytext.visibility = GONE
-            }
-
             for (box in boxes)
             {
                 (llayout as ViewGroup).removeView(box)
