@@ -9,14 +9,25 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.test.rnids.databinding.ActivityMainBinding
+import com.test.rnids.providers.TLDProvider
 import com.test.rnids.ui.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
+
+    companion object {
+        @JvmStatic lateinit var whoisClientWrapper: WHOISClientWrapper
+    }
+
+    lateinit var TLDProviderInst: TLDProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        TLDProviderInst = TLDProvider(applicationContext)
+        DepResolver.setCommonArg(applicationContext)
+
+        whoisClientWrapper = WHOISClientWrapper()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

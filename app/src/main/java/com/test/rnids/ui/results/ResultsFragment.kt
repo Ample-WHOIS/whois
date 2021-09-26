@@ -24,7 +24,7 @@ class ResultsFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         resultsViewModel =
             ViewModelProvider(this).get(ResultsViewModel::class.java)
 
@@ -38,6 +38,7 @@ class ResultsFragment : Fragment() {
                 "It was popularised in the 1960s with the release of Letraset " +
                 "sheets containing Lorem Ipsum passages, and more recently with desktop " +
                 "publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
+
         return root
     }
     override fun onDestroyView() {

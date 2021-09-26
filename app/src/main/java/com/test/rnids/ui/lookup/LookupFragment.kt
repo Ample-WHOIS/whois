@@ -2,7 +2,6 @@ package com.test.rnids.ui.lookup
 
 import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.opengl.GLES20.*
 import android.opengl.GLSurfaceView
 import android.os.Bundle
@@ -10,27 +9,36 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.*
-import com.test.rnids.WHOISWorker
+import com.test.rnids.MainActivity
+import com.test.rnids.providers.TLDProvider
+import com.test.rnids.WHOISClientWrapper
 import com.test.rnids.databinding.FragmentLookupBinding
-import org.apache.commons.net.whois.WhoisClient
 import java.io.InputStream
+import java.net.IDN
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import javax.microedition.khronos.opengles.GL10
+import android.app.Activity
+import androidx.lifecycle.LiveData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlin.coroutines.EmptyCoroutineContext
+
 
 class LookupFragment : Fragment() {
-
     private lateinit var lookupViewModel: LookupViewModel
     private var _binding: FragmentLookupBinding? = null
 
+    val whoisModel = WHOISClientWrapper()
+
     private val binding get() = _binding!!
+
+    val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,17 +59,11 @@ class LookupFragment : Fragment() {
 
         requestPermissionLauncher.launch(Manifest.permission.INTERNET)
 
-        val WHOISWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<WHOISWorker>().build()
-        WorkManager.getInstance(requireContext()).enqueue(WHOISWorkRequest).result
-
-        WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(WHOISWorkRequest.id)
-            .observe(viewLifecycleOwner, { raw ->
-                if (raw != null && raw.state.isFinished) {
-                    binding.testtext.text = raw.outputData.getString("result")
-                }
-            })
-
         _binding!!.queryButton.setOnClickListener { queryButtonListener(_binding!!) }
+
+        whoisModel.result.observe(viewLifecycleOwner, {
+            binding.testtext.text = it
+        })
 
         return binding.root
     }
@@ -75,6 +77,15 @@ class LookupFragment : Fragment() {
     {
         binding.queryButton.text = getString(com.test.rnids.R.string.button_loading)
         binding.surfaceView.setPush()
+
+        val domain: String = IDN.toASCII(binding.textInput.editText!!.text.toString(),
+            IDN.ALLOW_UNASSIGNED)
+
+        val mainActivity = context as MainActivity
+
+        scope.launch {
+            whoisModel.query(domain, mainActivity.TLDProviderInst.getServer(domain))
+        }
     }
 }
 
@@ -97,7 +108,7 @@ class BGRenderer(glsl: InputStream) : GLSurfaceView.Renderer {
     private val fragmentGLSL: InputStream = glsl
     private var shader: BGShader? = null
 
-    private var frame: Int = 1000
+    private var frame: Int = 3140
 
     private var push: Boolean = false
 
