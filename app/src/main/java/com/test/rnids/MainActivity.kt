@@ -9,7 +9,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.test.rnids.databinding.ActivityMainBinding
-import com.test.rnids.databinding.FragmentLookupBinding
 import com.test.rnids.ui.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_lookup, R.id.navigation_results, R.id.navigation_support))
+                R.id.navigation_lookup, R.id.navigation_results, R.id.navigation_history))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 

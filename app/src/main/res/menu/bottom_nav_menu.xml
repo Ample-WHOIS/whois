@@ -12,8 +12,8 @@
         android:title="@string/title_results" />
 
     <item
-        android:id="@+id/navigation_support"
-        android:icon="@drawable/support"
-        android:title="@string/title_support" />
+        android:id="@+id/navigation_history"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="History" />
 
 </menu>
