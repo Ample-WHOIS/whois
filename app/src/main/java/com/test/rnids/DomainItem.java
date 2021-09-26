@@ -6,7 +6,7 @@ public class DomainItem {
     private String favStatus;
     public DomainItem(){
     }
-    public DomainItem(int imageResourse,String title,String key_id,String favStatus){
+    public DomainItem(String title,String key_id,String favStatus){
         this.title=title;
         this.key_id=key_id;
         this.favStatus=favStatus;

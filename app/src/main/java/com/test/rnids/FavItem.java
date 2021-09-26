@@ -4,7 +4,7 @@ public class FavItem {
     private String item_title;
     private String key_id;
     private int item_image;
-    public FavItem(){
+    public FavItem(String title, String id){
 
     }
     public FavItem(String item_title,String key_id,int item_image){
