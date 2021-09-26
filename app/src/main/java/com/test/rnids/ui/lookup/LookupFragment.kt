@@ -1,6 +1,7 @@
 package com.test.rnids.ui.lookup
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.opengl.GLES20.*
 import android.opengl.GLSurfaceView
 import android.os.Bundle
@@ -71,7 +72,7 @@ class LookupFragment : Fragment() {
         binding.textInput.error = null
 
         binding.surfaceView.setPush()
-        var domain = binding.textInput.editText!!.text.toString()
+        var domain = binding.textInput.editText!!.text.toString().lowercase()
 
         if (domain.isEmpty())
         {
@@ -104,13 +105,6 @@ class LookupFragment : Fragment() {
                 mainActivity.switchToResults()
             }
         }
-
-        /*val settings: SharedPreferences = (context as MainActivity)
-            .getSharedPreferences(PREFS_NAME, 0)
-        val editor = settings.edit()
-        editor.putInt("homeScore", YOUR_HOME_SCORE)
-
-        editor.apply()*/
     }
 }
 

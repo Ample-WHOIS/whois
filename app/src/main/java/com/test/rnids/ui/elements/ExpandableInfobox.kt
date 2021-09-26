@@ -21,6 +21,9 @@ class ExpandableInfobox(context: Context, attrs: AttributeSet?) : LinearLayout(c
     private var title: TextView
     private var expandableTextView: ExpandableTextView
 
+    var isFavorite = false
+    var hasAlarm = false
+
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         addView(inflater.inflate(com.test.rnids.R.layout.expandable_infobox, this, false))
@@ -37,5 +40,15 @@ class ExpandableInfobox(context: Context, attrs: AttributeSet?) : LinearLayout(c
     fun setText(str: String)
     {
         expandableTextView.text = str
+    }
+
+    fun toggleFav()
+    {
+        isFavorite = !isFavorite
+    }
+
+    fun toggleAlarm()
+    {
+        hasAlarm = !hasAlarm
     }
 }

@@ -19,12 +19,53 @@
     "en": "",
     "sr": ""
   },
+  "domain": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
   "domainstatus": {
     "section": "basic",
     "en": "",
     "sr": ""
   },
+  "state": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "created" : {
+    "section": "basic",
+    "en": "",
+    "sr": "",
+    "variable": true
+  },
+  "modified" : {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "expires" : {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "transferred": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
   "registrationdate": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "registered": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "registredon": {
     "section": "basic",
     "en": "",
     "sr": ""
@@ -39,6 +80,22 @@
     "en": "",
     "sr": ""
   },
+  "expirydate": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "expire": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "changed": {
+    "section": "basic",
+    "en": "",
+    "sr": "",
+    "variable": true
+  },
   "confirmed": {
     "section": "basic",
     "en": "",
@@ -50,6 +107,27 @@
     "sr": ""
   },
   "registrant": {
+    "section": "owner",
+    "en": "",
+    "sr": ""
+  },
+  "url": {
+    "section": "owner",
+    "en": "",
+    "sr": "",
+    "variable" : true
+  },
+  "holder": {
+    "section": "owner",
+    "en": "",
+    "sr": ""
+  },
+  "org": {
+    "section": "owner",
+    "en": "",
+    "sr": ""
+  },
+  "name": {
     "section": "owner",
     "en": "",
     "sr": ""
@@ -78,6 +156,11 @@
     "sr": "",
     "variable": true
   },
+  "email": {
+    "section": "admin",
+    "en": "",
+    "sr": ""
+  },
   "administrativecontact": {
     "section": "admin",
     "en": "",
@@ -85,6 +168,11 @@
   },
   "technicalcontact": {
     "section": "tech",
+    "en": "",
+    "sr": ""
+  },
+  "contact": {
+    "section": "admin",
     "en": "",
     "sr": ""
   },
@@ -105,6 +193,41 @@
   },
   "whoistimestamp": {
     "section": "meta",
+    "en": "",
+    "sr": ""
+  },
+  "techc": {
+    "section": "tech",
+    "en": "",
+    "sr": ""
+  },
+  "admin-c": {
+    "section": "tech",
+    "en": "",
+    "sr": ""
+  },
+  "nserver": {
+    "section": "dns",
+    "en": "",
+    "sr": ""
+  },
+  "nameservers" : {
+    "section": "dns",
+    "en": "",
+    "sr": ""
+  },
+  "nameserver" : {
+    "section": "dns",
+    "en": "",
+    "sr": ""
+  },
+  "lastupdated": {
+    "section": "basic",
+    "en": "",
+    "sr": ""
+  },
+  "nsset": {
+    "section": "dns",
     "en": "",
     "sr": ""
   }

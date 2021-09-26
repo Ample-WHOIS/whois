@@ -11,16 +11,16 @@
     <string name="button_loading">Please wait…</string>
     <string name="language_switch">Language</string>
     <string name="resolution_switch">Graphics</string>
-    <string name="orientation_switch">Orientation</string>
-    <string name="brigthness_adjustment">Adjust Brigthness Level</string>
-    <string name="support">Support</string>
-    <string name="supportMessage">This app was made by students for 2021 Hackathon. Our contact mail is *</string>
-    <string name="invalid_error">Invalid Error</string>
-    <string name="empty_error">Empty</string>
+    <string name="invalid_error">Invalid domain</string>
+    <string name="empty_error">You need to enter a domain!</string>
   
     <string name="results_mode_pretty">Pretty</string>
     <string name="results_mode_raw">Raw</string>
     <string name="results_empty">No results yet!</string>
+
+    <string name="support">Support</string>
+    <string name="supportMessage">This app was made by first year students for the 2021 WHOIS Hackathon hosted by RNIDS and Quantox. Our contact e-mail address: quantumgleam@gmail.com</string>
+    <string name="whoisinfo">WHOIS is an internet protocol which queries databases for registered users and/or assignees of internet resources such as domain names or IP addresses.</string>
 
     <!-- Preference Titles -->
     <string name="pref_general_header">General</string>

@@ -1,16 +1,12 @@
 package com.test.rnids
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.apache.commons.net.whois.WhoisClient
 import java.io.IOException
 
 import android.os.AsyncTask
 import com.test.rnids.parsers.BasicParser
-import com.test.rnids.providers.IANAProvider
-import java.lang.Runnable
-import java.util.concurrent.Executor
 import java.util.concurrent.locks.ReentrantLock
 
 class WHOISTask(result: MutableLiveData<String>, lastDomain: MutableLiveData<String>,

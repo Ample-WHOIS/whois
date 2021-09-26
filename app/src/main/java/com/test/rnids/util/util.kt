@@ -1,27 +1,18 @@
 package com.test.rnids.util
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
-import java.util.concurrent.locks.ReentrantLock
-import android.net.NetworkInfo
-
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.JsonWriter
+import java.util.*
 
+import org.apache.commons.lang3.time.DateUtils.parseDate
+import java.text.ParseException
 
 fun hasNetworkAccess(context: Context): Boolean {
     val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -87,4 +78,16 @@ fun validateDomain(str: String) : Boolean
         return false
     }
     return true
+}
+
+fun tryParseDate(str: String) : Date?
+{
+    return try {
+        parseDate(str, "dd.MM.YYYY HH:mm:ss", "YYYY-MM-dd'T'HH:mm:ssX", "dd.MM.YYYY",
+            "dd-MMM-YYYY", "YYYY-MM-dd")
+    } catch (e: ParseException)
+    {
+        null
+    }
+
 }

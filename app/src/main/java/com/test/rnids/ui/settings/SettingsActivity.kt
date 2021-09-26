@@ -3,13 +3,10 @@ package com.test.rnids.ui.settings
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
 import android.widget.Button
 import android.content.Intent
 import android.view.MenuItem
-import android.view.View
-import com.test.rnids.MainActivity
-import com.test.rnids.Support
+import com.test.rnids.ui.support.SupportActivity
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -27,7 +24,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val supportButton = findViewById<Button>(com.test.rnids.R.id.supportButton)
         supportButton.setOnClickListener {
-            val intent = Intent(this, Support::class.java)
+            val intent = Intent(this, SupportActivity::class.java)
             startActivity(intent)
         }
 
